@@ -1,4 +1,4 @@
-package com.example.chatapp.ui.register
+package com.example.chatapp.ui.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -6,25 +6,19 @@ import com.example.chatapp.ui.ViewError
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class RegisterViewModel : ViewModel() {
+class LoginViewModel : ViewModel() {
+    var email = MutableLiveData<String>()
+    var password = MutableLiveData<String>()
+    var auth = Firebase.auth
+    var isLoading = MutableLiveData<Boolean>()
     var messageLiveData = MutableLiveData<ViewError>()
-    val userName = MutableLiveData<String>("eslam")
-    val email = MutableLiveData<String>()
-    val password = MutableLiveData<String>()
-    val passwordConfirmation = MutableLiveData<String>()
-    val isLoading = MutableLiveData<Boolean>()
-
-    val userNameError = MutableLiveData<String?>()
     val emailError = MutableLiveData<String?>()
     val passwordError = MutableLiveData<String?>()
-    val passwordConfirmError = MutableLiveData<String?>()
 
-    //val auth=FirebaseAuth.getInstance()
-    val auth = Firebase.auth
-    fun register() {
+    fun loginClick() {
         if (validForm()) {
             isLoading.value = true
-            auth.createUserWithEmailAndPassword(
+            auth.signInWithEmailAndPassword(
                 email?.value!!,
                 password?.value!!
 
@@ -41,15 +35,31 @@ class RegisterViewModel : ViewModel() {
 
     }
 
+//    fun loginClick(){
+//        isloadingLiveData.postValue(false)
+//        if(validForm()){
+//            auth.signInWithEmailAndPassword(emailLiveData.value!!,passwordLiveData.value!!)
+//                .addOnCompleteListener({task->
+//                    isloadingLiveData.postValue(false)
+//                    if (task.isSuccessful){
+//                        //show masseage
+//                        messageLiveData.postValue(ViewError(message = task.result.user?.uid))
+//
+//                    }
+//                    else{
+//                        //show message
+//                        messageLiveData.postValue(ViewError(message = task.exception?.localizedMessage))
+//                    }
+//
+//                })
+//        }
+//
+//
+//    }
+
     private fun validForm(): Boolean {
         var isValid = true
-        if (userName.value.isNullOrBlank()) {
-            //show error
-            userNameError.postValue("please enter your name")
-            isValid = false
-        } else {
-            userNameError.postValue(null)
-        }
+
         if (email.value.isNullOrBlank()) {
             //show error
             emailError.postValue("please enter your email")
@@ -66,16 +76,9 @@ class RegisterViewModel : ViewModel() {
         } else {
             passwordError.postValue(null)
         }
-        if (passwordConfirmation.value.isNullOrBlank() ||
-            passwordConfirmation.value != password.value
-        ) {
-            //show error
-            passwordConfirmError.postValue("passwords does't match")
-            isValid = false
 
-        } else {
-            passwordConfirmError.postValue(null)
-        }
         return isValid
     }
+
+
 }

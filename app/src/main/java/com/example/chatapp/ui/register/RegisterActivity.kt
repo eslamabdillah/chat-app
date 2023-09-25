@@ -1,11 +1,17 @@
 package com.example.chatapp.ui.register
 
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatapp.R
 import com.example.chatapp.databinding.ActivityRegisterBinding
+import com.example.chatapp.ui.ViewError
+import com.example.chatapp.ui.login.LoginActivity
+import com.example.chatapp.ui.showMessage
 
 class RegisterActivity : AppCompatActivity() {
     lateinit var viewBinding: ActivityRegisterBinding
@@ -14,10 +20,25 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViews()
+        initObserves()
 
 
 //        viewBinding=ActivityRegisterBinding.inflate(layoutInflater)
-//        setContentView(viewBinding.root )
+//        setContentView(viewBinding.root)
+    }
+
+    private fun initObserves() {
+        viewModel.messageLiveData.observe(this, object : Observer<ViewError> {
+            override fun onChanged(value: ViewError) {
+                showMessage(message = value.message ?: "something is wrong",
+                    posActionName = "ok",
+                    postAction = { dialogInterface: DialogInterface, i: Int ->
+                        dialogInterface.dismiss()
+
+                    }
+                )
+            }
+        })
     }
 
     private fun initViews() {
@@ -25,5 +46,10 @@ class RegisterActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
         viewBinding.lifecycleOwner = this
         viewBinding.vm = viewModel
+
+        viewBinding.content.haveAccount.setOnClickListener({
+            var intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        })
     }
 }
