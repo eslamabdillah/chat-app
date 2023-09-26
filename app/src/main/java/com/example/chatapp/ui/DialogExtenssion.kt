@@ -33,23 +33,31 @@ fun Fragment.showMessage(
 fun Activity.showMessage(
     message: String,
     posActionName: String? = null,
-    postAction: DialogInterface.OnClickListener? = null,
+    postAction: OnDialogActionClick? = null,
     negActionName: String? = null,
-    negAction: DialogInterface.OnClickListener? = null,
+    negAction: OnDialogActionClick? = null,
+    isCancelable: Boolean = true
 ): AlertDialog {
     //object from alertDialog
     val dialogBuilder = AlertDialog.Builder(this)
     //option in AlertDialog
     dialogBuilder.setMessage(message)
     if (posActionName !== null) {
-        dialogBuilder.setPositiveButton(posActionName, postAction)
+        dialogBuilder.setNeutralButton(posActionName, { dialog, id ->
+            dialog.dismiss()
+            postAction?.onActionClick()
+        })
+
 
     }
     if (negActionName !== null) {
-        dialogBuilder.setNeutralButton(negActionName, negAction)
+        dialogBuilder.setNeutralButton(negActionName, { dialog, id ->
+            dialog.dismiss()
+            negAction?.onActionClick()
+        })
 
     }
-
+    dialogBuilder.setCancelable(isCancelable)
     return dialogBuilder.show()
 }
 

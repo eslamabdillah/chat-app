@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatapp.R
 import com.example.chatapp.databinding.ActivityLoginBinding
+import com.example.chatapp.ui.home.HomeActivity
 import com.example.chatapp.ui.register.RegisterActivity
 import com.example.chatapp.ui.showMessage
 
@@ -22,16 +24,46 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initObserves() {
-        viewModel.messageLiveData.observe(this, { it ->
-            showMessage(message = it.message ?: "something is wrong",
+        viewModel.messageLiveData.observe(this, { message ->
+            showMessage(
+                message = message.message ?: "something is wrong",
                 posActionName = "ok",
-                postAction = { dialog, i ->
-                    dialog.dismiss()
+                postAction = message.onPosActionClick,
+                negActionName = message.negActionName,
+                negAction = message.onNegActionClick,
+                isCancelable = message.isCancelable
 
-                }
 
             )
         })
+
+        viewModel.events.observe(this, object : Observer<LoginViewEvents> {
+            override fun onChanged(loginViewEvents: LoginViewEvents) {
+                when (loginViewEvents) {
+                    LoginViewEvents.NavigateToHome -> {
+                        navigateToHome()
+
+                    }
+
+                    LoginViewEvents.NavigateToRegister -> {
+                        navigateToRegister()
+
+                    }
+                }
+            }
+        })
+    }
+
+    private fun navigateToRegister() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun initViews() {
