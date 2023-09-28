@@ -6,4 +6,8 @@ data class User(
     val email: String? = null,
 
 
-    )
+    ) {
+    companion object {
+        const val COLLECTION_USERS = "users"
+    }
+}

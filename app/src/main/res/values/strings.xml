@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ChatApp</string>
+    <array name="category">
+        <item>sports</item>
+        <item>music</item>
+        <item>movies</item>
+    </array>
+
 </resources>

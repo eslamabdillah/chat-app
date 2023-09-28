@@ -11,9 +11,11 @@ fun Fragment.showMessage(
     postAction: DialogInterface.OnClickListener? = null,
     negActionName: String? = null,
     negAction: DialogInterface.OnClickListener? = null,
+    isCancelable: Boolean = true
+
 ): AlertDialog {
 
-    //object from alertDialog
+    //object from alertDialog (context = this in activity )
     val dialogBuilder = AlertDialog.Builder(context)
 
     //option in AlertDialog
@@ -26,7 +28,7 @@ fun Fragment.showMessage(
         dialogBuilder.setNeutralButton(negActionName, negAction)
 
     }
-
+    dialogBuilder.setCancelable(isCancelable)
     return dialogBuilder.show()
 }
 

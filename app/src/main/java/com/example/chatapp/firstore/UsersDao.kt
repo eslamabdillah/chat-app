@@ -10,7 +10,7 @@ import com.google.firebase.ktx.Firebase
 object UsersDao {
     fun getUsersCollection(): CollectionReference {
         val database = Firebase.firestore
-        return database.collection("users")
+        return database.collection(User.COLLECTION_USERS)
     }
 
     fun createUser(user: User, OnCompleteListener: OnCompleteListener<Void>) {

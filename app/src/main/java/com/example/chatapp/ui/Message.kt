@@ -11,5 +11,4 @@ data class Message(
 
 fun interface OnDialogActionClick {
     fun onActionClick()
-
 }

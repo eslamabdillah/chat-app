@@ -54,11 +54,12 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
 
-    //fire store
 
     //livedata+viewModeling
     def lifecycle_version = "2.6.2"
 
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation 'androidx.fragment:fragment-ktx:1.6.0'
+
 }

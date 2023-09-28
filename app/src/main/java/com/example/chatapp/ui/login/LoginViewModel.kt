@@ -1,5 +1,6 @@
 package com.example.chatapp.ui.login
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.chatapp.SessionProvider
@@ -11,8 +12,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class LoginViewModel : ViewModel() {
-    var email = MutableLiveData<String>()
-    var password = MutableLiveData<String>()
+    var email = MutableLiveData<String>("eslam@gmail.com")
+    var password = MutableLiveData<String>("123456")
     var auth = Firebase.auth
     var isLoading = MutableLiveData<Boolean>()
     var messageLiveData = SingleLiveEvent<Message>()
@@ -47,8 +48,12 @@ class LoginViewModel : ViewModel() {
             .getUser(uid, { task ->
                 isLoading.value = false
                 if (task.isSuccessful) {
+                    // check recvie id
+                    Log.d("Sessionuser0", uid.toString())
+                    //take user from resuld
                     val user = task.result.toObject(User::class.java)
-                    SessionProvider.user = user
+                    Log.d("Sessionuserid", task.result.id)
+                    SessionProvider.user = task.result.toObject(User::class.java)
                     messageLiveData.postValue(
                         Message(
                             message = "loged is succfulty",
@@ -71,28 +76,6 @@ class LoginViewModel : ViewModel() {
 
     }
 
-
-//    fun loginClick(){
-//        isloadingLiveData.postValue(false)
-//        if(validForm()){
-//            auth.signInWithEmailAndPassword(emailLiveData.value!!,passwordLiveData.value!!)
-//                .addOnCompleteListener({task->
-//                    isloadingLiveData.postValue(false)
-//                    if (task.isSuccessful){
-//                        //show masseage
-//                        messageLiveData.postValue(ViewError(message = task.result.user?.uid))
-//
-//                    }
-//                    else{
-//                        //show message
-//                        messageLiveData.postValue(ViewError(message = task.exception?.localizedMessage))
-//                    }
-//
-//                })
-//        }
-//
-//
-//    }
 
     private fun validForm(): Boolean {
         var isValid = true

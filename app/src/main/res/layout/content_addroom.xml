@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_add_room">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.example.chatapp.ui.addroom.AddRoomViewModel" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="create new room"
+                android:textSize="28sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginVertical="12dp"
+                android:src="@color/black" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/room_name_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:error="@{vm.roomNameError}">
+
+                <EditText
+                    android:id="@+id/et_nameRoom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="enter room title"
+                    android:hint="room title"
+                    android:text="@={vm.roomName}" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="categories"
+                android:textSize="24sp" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/cn_descRoom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:error="@{vm.roomDescError}">
+
+                <EditText
+                    android:id="@+id/et_descRoom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:lines="5"
+                    android:text="@={vm.roomDesc}"
+
+                    />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->vm.createRoom()}"
+                android:text="add Room"
+                app:cornerRadius="24dp" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

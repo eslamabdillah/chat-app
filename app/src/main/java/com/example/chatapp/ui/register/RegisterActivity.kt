@@ -37,8 +37,6 @@ class RegisterActivity : AppCompatActivity() {
                     negActionName = message.negActionName,
                     negAction = message.onNegActionClick,
                     isCancelable = message.isCancelable
-
-
                 )
             }
         })
